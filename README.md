@@ -20,6 +20,7 @@ PdfSplicer 正是为此而生！（天才）
 <div align="center">
 	<img width="400" alt="截屏2025-08-27 15 02 32" src="https://github.com/user-attachments/assets/e22dde23-d568-4592-9f83-bb71a0ec1290" />
 </div>
+
 1. 前往项目的 [Release 页面](https://github.com/Haookun/PdfSplicer/releases) 下载最新的 `PdfSplicer.dmg` 安装包。
 2. 双击打开 DMG 文件，将 `PdfSplicer.app` 拖入 macOS 的“应用程序”文件夹。
 3. 在应用程序中启动 PdfSplicer，按界面提示选择正面、反面 PDF 和输出路径，点击“开始拼接”即可。
