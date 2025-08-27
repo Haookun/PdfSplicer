@@ -1,19 +1,17 @@
-
-<div align="right">
-	[English](https://github.com/Haookun/PdfSplicer/blob/main/README.en.md) |
-	[日本語](https://github.com/Haookun/PdfSplicer/blob/main/README.jp.md) |
-	[한국어](https://github.com/Haookun/PdfSplicer/blob/main/README.ko.md) |
-	[Français](https://github.com/Haookun/PdfSplicer/blob/main/README.fr.md) |
-	[Deutsch](https://github.com/Haookun/PdfSplicer/blob/main/README.de.md) |
-	[Español](https://github.com/Haookun/PdfSplicer/blob/main/README.es.md) |
-	[Русский](https://github.com/Haookun/PdfSplicer/blob/main/README.ru.md) |
-	[Português](https://github.com/Haookun/PdfSplicer/blob/main/README.pt.md)
-</div>
 <div align="center">
 	<img width="100" height="100" alt="app_icon" src="https://github.com/user-attachments/assets/a3f9089a-cf94-43be-b485-f682a43492c6" />
 </div>
 
 # PdfSplicer
+
+[English](https://github.com/Haookun/PdfSplicer/blob/main/README.en.md) |
+[日本語](https://github.com/Haookun/PdfSplicer/blob/main/README.jp.md) |
+[한국어](https://github.com/Haookun/PdfSplicer/blob/main/README.ko.md) |
+[Français](https://github.com/Haookun/PdfSplicer/blob/main/README.fr.md) |
+[Deutsch](https://github.com/Haookun/PdfSplicer/blob/main/README.de.md) |
+[Español](https://github.com/Haookun/PdfSplicer/blob/main/README.es.md) |
+[Русский](https://github.com/Haookun/PdfSplicer/blob/main/README.ru.md) |
+[Português](https://github.com/Haookun/PdfSplicer/blob/main/README.pt.md)
 
 你是否在扫描纸质文档时遇到过这样的困扰：正面和反面分别扫描后，面对两份 PDF 文件却不知道如何高效、准确地拼接成一个完整文档？
 
