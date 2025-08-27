@@ -2,6 +2,7 @@
 <div align="center">
    <img width="100" height="100" alt="app_icon" src="https://github.com/user-attachments/assets/a3f9089a-cf94-43be-b485-f682a43492c6" />
 </div>
+
 # PdfSplicer
 
 両面スキャンしたPDFをどうやって一つにまとめるか悩んだことはありませんか？
