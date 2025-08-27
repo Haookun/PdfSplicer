@@ -1,4 +1,6 @@
-
+# <div align="center">
+	<img width="100" height="100" alt="app_icon" src="https://github.com/user-attachments/assets/a3f9089a-cf94-43be-b485-f682a43492c6" />
+</div>
 
 # PdfSplicer
 
@@ -15,7 +17,7 @@ PdfSplicer 正是为此而生！（天才）
 - 一键生成完整 PDF 文件
 
 ## 使用方法
-1. 前往项目的 `release` 文件夹，找到最新的 `PdfSplicer.dmg` 安装包。
+1. 前往项目的 [Release 页面](https://github.com/Haookun/PdfSplicer/releases) 下载最新的 `PdfSplicer.dmg` 安装包。
 2. 双击打开 DMG 文件，将 `PdfSplicer.app` 拖入 macOS 的“应用程序”文件夹。
 3. 在应用程序中启动 PdfSplicer，按界面提示选择正面、反面 PDF 和输出路径，点击“开始拼接”即可。
 
@@ -41,7 +43,6 @@ PdfSplicer 正是为此而生！（天才）
  6. 建议将最终的 `PdfSplicer.dmg` 文件移动到 `release` 文件夹，方便用户下载和分发。
  7. 用户只需打开 DMG 文件，将 `PdfSplicer.app` 拖入“应用程序”文件夹即可完成安装。
  
- > 如需自定义图标、修改 DMG 配置或添加更多分发说明，可参考本项目的 `dmg_settings.py` 和相关文档。
 
 ## 许可证
 MIT License
