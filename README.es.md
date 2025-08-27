@@ -16,7 +16,7 @@
 - Generación de PDF con un clic
 
 ## Uso
-1. Ve a la carpeta `release` y busca el instalador `PdfSplicer.dmg` más reciente.
+1. Ve a la [página de Releases](https://github.com/Haookun/PdfSplicer/releases) y descarga el instalador `PdfSplicer.dmg` más reciente.
 2. Abre el archivo DMG y arrastra `PdfSplicer.app` a la carpeta de Aplicaciones.
 3. Inicia PdfSplicer, selecciona los PDFs de anverso/reverso y la ruta de salida, haz clic en "Iniciar unión".
 

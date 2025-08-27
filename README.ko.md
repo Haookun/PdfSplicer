@@ -16,7 +16,7 @@ PdfSplicer가 해결해드립니다! macOS용 스마트 PDF 병합 도구로, �
 - 원클릭 PDF 생성
 
 ## 사용법
-1. `release` 폴더에서 최신 `PdfSplicer.dmg`를 찾으세요.
+1. [Release 페이지](https://github.com/Haookun/PdfSplicer/releases)에서 최신 `PdfSplicer.dmg`를 다운로드하세요.
 2. DMG 파일을 열고 `PdfSplicer.app`을 응용 프로그램 폴더로 드래그합니다.
 3. 앱을 실행하고 앞/뒷면 PDF와 출력 경로를 선택, "병합 시작" 클릭.
 

@@ -16,7 +16,7 @@ PdfSplicer is designed for this! This is a smart PDF merging tool for macOS, wit
 - One-click to generate complete PDF
 
 ## Usage
-1. Go to the `release` folder and find the latest `PdfSplicer.dmg` installer.
+1. Go to the [Release page](https://github.com/Haookun/PdfSplicer/releases) and download the latest `PdfSplicer.dmg` installer.
 2. Double-click the DMG file, drag `PdfSplicer.app` into the Applications folder.
 3. Launch PdfSplicer, follow the interface to select front/back PDFs and output path, then click "Start Merging".
 

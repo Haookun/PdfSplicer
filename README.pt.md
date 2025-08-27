@@ -16,7 +16,7 @@ PdfSplicer resolve isso! Ferramenta inteligente para macOS, interface gráfica, 
 - Geração de PDF com um clique
 
 ## Como usar
-1. Vá até a pasta `release` e encontre o instalador `PdfSplicer.dmg` mais recente.
+1. Vá até a [página de Releases](https://github.com/Haookun/PdfSplicer/releases) e baixe o instalador `PdfSplicer.dmg` mais recente.
 2. Abra o arquivo DMG e arraste `PdfSplicer.app` para a pasta Aplicativos.
 3. Inicie o PdfSplicer, selecione os PDFs frente/verso e o caminho de saída, clique em "Iniciar união".
 

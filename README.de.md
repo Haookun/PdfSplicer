@@ -16,7 +16,7 @@ PdfSplicer löst dieses Problem! Ein intelligentes PDF-Merge-Tool für macOS mit
 - Ein-Klick-Erstellung des vollständigen PDFs
 
 ## Anwendung
-1. Gehen Sie in den `release`-Ordner und finden Sie die neueste `PdfSplicer.dmg` Installationsdatei.
+1. Gehen Sie auf die [Release-Seite](https://github.com/Haookun/PdfSplicer/releases) und laden Sie die neueste `PdfSplicer.dmg` Installationsdatei herunter.
 2. Öffnen Sie die DMG-Datei und ziehen Sie `PdfSplicer.app` in den Programme-Ordner.
 3. Starten Sie PdfSplicer, wählen Sie Vorder-/Rückseiten-PDF und Ausgabepfad, klicken Sie auf "Zusammenfügen starten".
 

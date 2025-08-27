@@ -16,7 +16,7 @@ PdfSplicerはその悩みを解決します！macOS向けのスマートPDF結�
 - ワンクリックでPDF生成
 
 ## 使い方
-1. `release`フォルダで最新の`PdfSplicer.dmg`を探します。
+1. [Releaseページ](https://github.com/Haookun/PdfSplicer/releases)で最新の`PdfSplicer.dmg`をダウンロードします。
 2. DMGを開き、`PdfSplicer.app`をアプリケーションフォルダにドラッグします。
 3. アプリを起動し、表裏PDFと出力先を選択、「開始」ボタンで結合。
 
