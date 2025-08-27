@@ -1,4 +1,5 @@
 # 忽略打包和构建产物
+*.dmg
 /dist/
 /build/
 *.spec

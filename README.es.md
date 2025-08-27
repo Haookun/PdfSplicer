@@ -2,6 +2,7 @@
 <div align="center">
    <img width="100" height="100" alt="app_icon" src="https://github.com/user-attachments/assets/a3f9089a-cf94-43be-b485-f682a43492c6" />
 </div>
+
 # PdfSplicer
 
 ¿Alguna vez te has preguntado cómo unir fácilmente los PDFs de anverso y reverso de un documento escaneado?
@@ -16,6 +17,11 @@
 - Generación de PDF con un clic
 
 ## Uso
+
+<div align="center">
+   <img width="400" alt="Captura de pantalla" src="https://github.com/user-attachments/assets/e22dde23-d568-4592-9f83-bb71a0ec1290" />
+</div>
+
 1. Ve a la [página de Releases](https://github.com/Haookun/PdfSplicer/releases) y descarga el instalador `PdfSplicer.dmg` más reciente.
 2. Abre el archivo DMG y arrastra `PdfSplicer.app` a la carpeta de Aplicaciones.
 3. Inicia PdfSplicer, selecciona los PDFs de anverso/reverso y la ruta de salida, haz clic en "Iniciar unión".

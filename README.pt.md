@@ -2,6 +2,7 @@
 <div align="center">
    <img width="100" height="100" alt="app_icon" src="https://github.com/user-attachments/assets/a3f9089a-cf94-43be-b485-f682a43492c6" />
 </div>
+
 # PdfSplicer
 
 Já teve dificuldades ao digitalizar documentos frente e verso e não sabe como unir os PDFs em um só?
@@ -16,6 +17,11 @@ PdfSplicer resolve isso! Ferramenta inteligente para macOS, interface gráfica, 
 - Geração de PDF com um clique
 
 ## Como usar
+
+<div align="center">
+   <img width="400" alt="Captura de tela" src="https://github.com/user-attachments/assets/e22dde23-d568-4592-9f83-bb71a0ec1290" />
+</div>
+
 1. Vá até a [página de Releases](https://github.com/Haookun/PdfSplicer/releases) e baixe o instalador `PdfSplicer.dmg` mais recente.
 2. Abra o arquivo DMG e arraste `PdfSplicer.app` para a pasta Aplicativos.
 3. Inicie o PdfSplicer, selecione os PDFs frente/verso e o caminho de saída, clique em "Iniciar união".

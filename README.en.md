@@ -2,6 +2,7 @@
 <div align="center">
    <img width="100" height="100" alt="app_icon" src="https://github.com/user-attachments/assets/a3f9089a-cf94-43be-b485-f682a43492c6" />
 </div>
+
 # PdfSplicer
 
 Are you troubled when scanning double-sided documents, not knowing how to efficiently merge the front and back PDFs into one?
@@ -16,6 +17,11 @@ PdfSplicer is designed for this! This is a smart PDF merging tool for macOS, wit
 - One-click to generate complete PDF
 
 ## Usage
+
+<div align="center">
+   <img width="400" alt="Screenshot" src="https://github.com/user-attachments/assets/e22dde23-d568-4592-9f83-bb71a0ec1290" />
+</div>
+
 1. Go to the [Release page](https://github.com/Haookun/PdfSplicer/releases) and download the latest `PdfSplicer.dmg` installer.
 2. Double-click the DMG file, drag `PdfSplicer.app` into the Applications folder.
 3. Launch PdfSplicer, follow the interface to select front/back PDFs and output path, then click "Start Merging".

@@ -2,6 +2,7 @@
 <div align="center">
    <img width="100" height="100" alt="app_icon" src="https://github.com/user-attachments/assets/a3f9089a-cf94-43be-b485-f682a43492c6" />
 </div>
+
 # PdfSplicer
 
 Haben Sie sich beim Scannen von beidseitigen Dokumenten schon gefragt, wie Sie Vorder- und Rückseiten-PDFs effizient zu einer Datei zusammenfügen?
@@ -16,6 +17,11 @@ PdfSplicer löst dieses Problem! Ein intelligentes PDF-Merge-Tool für macOS mit
 - Ein-Klick-Erstellung des vollständigen PDFs
 
 ## Anwendung
+
+<div align="center">
+   <img width="400" alt="Screenshot" src="https://github.com/user-attachments/assets/e22dde23-d568-4592-9f83-bb71a0ec1290" />
+</div>
+
 1. Gehen Sie auf die [Release-Seite](https://github.com/Haookun/PdfSplicer/releases) und laden Sie die neueste `PdfSplicer.dmg` Installationsdatei herunter.
 2. Öffnen Sie die DMG-Datei und ziehen Sie `PdfSplicer.app` in den Programme-Ordner.
 3. Starten Sie PdfSplicer, wählen Sie Vorder-/Rückseiten-PDF und Ausgabepfad, klicken Sie auf "Zusammenfügen starten".
