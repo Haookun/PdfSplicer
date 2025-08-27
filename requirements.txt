@@ -1,2 +1,4 @@
-PyQt5
 pypdf
+pdf2image
+Pillow
+tkinterdnd2-universal
