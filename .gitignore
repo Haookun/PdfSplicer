@@ -1,0 +1,8 @@
+# 忽略打包和构建产物
+/dist/
+/build/
+*.spec
+*.DS_Store
+*.pyc
+__pycache__/
+.venv/
