@@ -1,8 +1,8 @@
-# PdfSplicer
 
 <div align="center">
-  <img width="100" height="100" alt="app_icon" src="https://github.com/user-attachments/assets/a3f9089a-cf94-43be-b485-f682a43492c6" />
+   <img width="100" height="100" alt="app_icon" src="https://github.com/user-attachments/assets/a3f9089a-cf94-43be-b485-f682a43492c6" />
 </div>
+# PdfSplicer
 
 양면 문서를 스캔할 때 앞뒤 PDF를 하나로 합치는 방법에 고민한 적 있나요?
 
