@@ -1,7 +1,6 @@
 <div align="center">
 	<img width="100" height="100" alt="app_icon" src="https://github.com/user-attachments/assets/a3f9089a-cf94-43be-b485-f682a43492c6" />
 </div>
-
 # PdfSplicer
 
 你是否在扫描纸质文档时遇到过这样的困扰：正面和反面分别扫描后，面对两份 PDF 文件却不知道如何高效、准确地拼接成一个完整文档？
@@ -18,7 +17,7 @@ PdfSplicer 正是为此而生！（天才）
 
 ## 使用方法
 <div align="center">
-	<img width="612" height="540" alt="截屏2025-08-27 15 02 32" src="https://github.com/user-attachments/assets/e22dde23-d568-4592-9f83-bb71a0ec1290" />
+	<img width="306" height="270" alt="截屏2025-08-27 15 02 32" src="https://github.com/user-attachments/assets/e22dde23-d568-4592-9f83-bb71a0ec1290" />
 </div>
 1. 前往项目的 [Release 页面](https://github.com/Haookun/PdfSplicer/releases) 下载最新的 `PdfSplicer.dmg` 安装包。
 2. 双击打开 DMG 文件，将 `PdfSplicer.app` 拖入 macOS 的“应用程序”文件夹。
