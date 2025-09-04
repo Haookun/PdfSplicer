@@ -1,4 +1,3 @@
-
 <div align="center">
    <img width="100" height="100" alt="app_icon" src="https://github.com/user-attachments/assets/a3f9089a-cf94-43be-b485-f682a43492c6" />
 </div>
@@ -15,6 +14,7 @@ PdfSplicer est là pour vous ! Cet outil intelligent pour macOS propose une inte
 - Reconnaissance et fusion automatiques de l’ordre des pages
 - Choix du dossier de sortie et ouverture rapide
 - Génération du PDF en un clic
+- Saut automatique des pages blanches : option activable, détecte et ignore intelligemment les pages vides pour une fusion plus efficace.
 
 ## Utilisation
 
@@ -27,27 +27,34 @@ PdfSplicer est là pour vous ! Cet outil intelligent pour macOS propose une inte
 3. Lancez PdfSplicer, suivez l’interface pour choisir les PDF recto/verso et le chemin de sortie, puis cliquez sur "Démarrer la fusion".
 
 ## Packaging & Distribution
-1. Installer les dépendances :
-   ```bash
-   pip install pyinstaller dmgbuild
-   ```
-2. Préparez une icône transparente `.icns` nommée `app_icon.icns` à la racine du projet.
-3. Emballez avec PyInstaller :
-   ```bash
-   pyinstaller --windowed --name PdfSplicer --icon=app_icon.icns main.py
-   ```
-   - Résultat dans `dist/PdfSplicer.app`.
-4. Vérifiez ou modifiez `dmg_settings.py` pour la configuration DMG.
-5. Créez le DMG :
-   ```bash
-   dmgbuild -s dmg_settings.py "PdfSplicer" PdfSplicer.dmg
-   ```
-   - DMG dans la racine du projet ou le chemin spécifié.
-6. Déplacez le DMG dans le dossier `release` pour la distribution.
-7. L’utilisateur n’a qu’à glisser `PdfSplicer.app` dans Applications pour installer.
+
+### Script de build automatique
+
+Le projet inclut le script automatique `build_app.sh` pour installer les dépendances, packager l’App, générer le DMG et vérifier le démarrage en une seule commande.
+
+Utilisation :
+```bash
+bash build_app.sh
+```
+- Le script installe automatiquement les dépendances de requirements.txt et les outils de build.
+- Intègre automatiquement le dossier bin (pdftoppm et autres outils poppler).
+- Après le packaging, vérifie le lancement de l’App et écrit les logs dans dist/app_test.log.
+- Les artefacts sont dans le dossier dist/ (App) et à la racine du projet (DMG).
+
+Vous pouvez personnaliser les paramètres ou corriger les dépendances en éditant directement `build_app.sh`.
 
 ## Licence
 MIT License
+
+## Dépannage
+
+- Si vous voyez « pdftoppm introuvable » ou une erreur similaire :
+  1. L’application utilise d’abord le dossier bin intégré (déjà inclus).
+  2. Pour une installation manuelle, exécutez :
+     ```bash
+     brew install poppler
+     ```
+  3. Redémarrez l’application après installation.
 
 ## Dépôt
 https://github.com/Haookun/PdfSplicer

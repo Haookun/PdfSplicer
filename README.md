@@ -25,6 +25,7 @@ PdfSplicer 正是为此而生！（天才）
 - 自动识别并按正确页码顺序拼接
 - 支持输出文件夹选择和快速打开
 - 一键生成完整 PDF 文件
+- 自动跳过空白页：可选开关，智能识别并跳过空白页，提升拼接效率。
 
 ## 使用方法
 
@@ -37,7 +38,24 @@ PdfSplicer 正是为此而生！（天才）
 3. 在应用程序中启动 PdfSplicer，按界面提示选择正面、反面 PDF 和输出路径，点击“开始拼接”即可。
 
 ## 打包与分发（开发者操作指南）
- 
+
+### 一键自动打包脚本
+
+项目已集成自动打包脚本 `build_app.sh`，可一键完成依赖安装、App 打包、DMG 生成和启动检测。
+
+使用方法：
+```bash
+bash build_app.sh
+```
+- 脚本会自动安装 requirements.txt 和打包相关依赖。
+- 自动集成 bin 目录（pdftoppm 等 poppler 工具）。
+- 打包后自动检测 App 是否可运行，并输出日志到 dist/app_test.log。
+- 产物默认在 dist/ 目录（App）和项目根目录（DMG）。
+
+如需自定义参数或修复依赖，可直接编辑 `build_app.sh`。
+
+### 手动打包
+
  1. 安装打包依赖：
 	 ```bash
 	 pip install pyinstaller dmgbuild
@@ -56,8 +74,19 @@ PdfSplicer 正是为此而生！（天才）
 	 - 生成的 DMG 文件会在项目根目录或指定路径下。
  6. 建议将最终的 `PdfSplicer.dmg` 文件移动到 `release` 文件夹，方便用户下载和分发。
  7. 用户只需打开 DMG 文件，将 `PdfSplicer.app` 拖入“应用程序”文件夹即可完成安装。
+ 8. 应用已自动集成 pdftoppm（poppler 工具），无需手动安装。打包时会将 pdftoppm 可执行文件一同分发，确保 PDF 预览和空白页识别功能正常。
  
 
 ## 许可证
 MIT License
+
+## 常见问题与错误提示
+
+- 如果运行时出现 “pdftoppm 未找到” 或相关错误：
+  1. 优先使用项目自带的 bin 目录（已自动集成）。
+  2. 如需手动安装，可在终端执行：
+     ```bash
+     brew install poppler
+     ```
+  3. 安装后重启应用即可。
 

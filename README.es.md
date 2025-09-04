@@ -1,4 +1,3 @@
-
 <div align="center">
    <img width="100" height="100" alt="app_icon" src="https://github.com/user-attachments/assets/a3f9089a-cf94-43be-b485-f682a43492c6" />
 </div>
@@ -15,6 +14,7 @@
 - Reconocimiento y fusión automática del orden de páginas
 - Selección de carpeta de salida y apertura rápida
 - Generación de PDF con un clic
+- Omitir automáticamente páginas en blanco: opción activable, detecta e ignora páginas vacías para mejorar la eficiencia de la unión.
 
 ## Uso
 
@@ -27,27 +27,34 @@
 3. Inicia PdfSplicer, selecciona los PDFs de anverso/reverso y la ruta de salida, haz clic en "Iniciar unión".
 
 ## Empaquetado y distribución
-1. Instala dependencias:
-   ```bash
-   pip install pyinstaller dmgbuild
-   ```
-2. Prepara un icono `.icns` transparente llamado `app_icon.icns` en la raíz del proyecto.
-3. Empaqueta con PyInstaller:
-   ```bash
-   pyinstaller --windowed --name PdfSplicer --icon=app_icon.icns main.py
-   ```
-   - Salida en `dist/PdfSplicer.app`.
-4. Revisa o edita `dmg_settings.py` para la configuración DMG.
-5. Crea el DMG:
-   ```bash
-   dmgbuild -s dmg_settings.py "PdfSplicer" PdfSplicer.dmg
-   ```
-   - DMG en la raíz del proyecto o ruta especificada.
-6. Mueve el DMG a la carpeta `release` para distribución.
-7. El usuario solo debe arrastrar `PdfSplicer.app` a Aplicaciones para instalar.
+
+### Script de empaquetado automático
+
+El proyecto incluye el script automático `build_app.sh` para instalar dependencias, empaquetar la App, generar el DMG y verificar el inicio con un solo comando.
+
+Uso:
+```bash
+bash build_app.sh
+```
+- El script instala automáticamente las dependencias de requirements.txt y las herramientas de empaquetado.
+- Integra automáticamente el directorio bin (pdftoppm y otras herramientas poppler).
+- Tras el empaquetado, verifica si la App se inicia y guarda el log en dist/app_test.log.
+- Los artefactos se encuentran en la carpeta dist/ (App) y en la raíz del proyecto (DMG).
+
+Puedes personalizar parámetros o corregir dependencias editando directamente `build_app.sh`.
 
 ## Licencia
 MIT License
+
+## Solución de problemas
+
+- Si ves "pdftoppm no encontrado" o errores similares:
+  1. La app usará primero el directorio bin integrado (ya incluido).
+  2. Para instalación manual, ejecuta:
+     ```bash
+     brew install poppler
+     ```
+  3. Reinicia la app tras la instalación.
 
 ## Repositorio
 https://github.com/Haookun/PdfSplicer
