@@ -6,15 +6,16 @@
 
 Are you troubled when scanning double-sided documents, not knowing how to efficiently merge the front and back PDFs into one?
 
-PdfSplicer is designed for this! This is a smart PDF merging tool for macOS, with a graphical interface, automatically recognizing page order and merging into a complete PDF.
+PdfSplicer is designed for this! This is a smart PDF merging tool for macOS, featuring a modern CustomTkinter interface with drag-and-drop support, automatically recognizing page order and merging into a complete PDF.
 
 ## Features
-- Simple graphical interface
+- Modern CustomTkinter interface, clean and elegant
+- Drag-and-drop or click to select PDF files
 - Select front and back scanned PDFs
 - Automatically recognize and merge in correct page order
 - Choose output folder and open quickly
 - One-click to generate complete PDF
-- Auto skip blank pages: Optional switch, intelligently detects and skips blank pages to improve merging efficiency.
+- Auto skip blank pages: Optional switch, uses white-pixel ratio analysis to intelligently detect and skip blank pages (including near-white scanned pages), improving merging efficiency.
 
 ## Usage
 

@@ -6,15 +6,16 @@
 
 Haben Sie sich beim Scannen von beidseitigen Dokumenten schon gefragt, wie Sie Vorder- und Rückseiten-PDFs effizient zu einer Datei zusammenfügen?
 
-PdfSplicer löst dieses Problem! Ein intelligentes PDF-Merge-Tool für macOS mit grafischer Oberfläche, erkennt automatisch die Seitenreihenfolge und erstellt ein vollständiges PDF.
+PdfSplicer löst dieses Problem! Ein intelligentes PDF-Merge-Tool für macOS mit moderner CustomTkinter-Oberfläche und Drag-and-Drop-Unterstützung, erkennt automatisch die Seitenreihenfolge und erstellt ein vollständiges PDF.
 
 ## Funktionen
-- Einfache grafische Oberfläche
+- Moderne CustomTkinter-Oberfläche, schlicht und elegant
+- Drag-and-Drop oder Klick zur PDF-Auswahl
 - Auswahl von Vorder- und Rückseiten-PDF
 - Automatische Erkennung und Zusammenführung der Seitenreihenfolge
 - Auswahl des Ausgabeordners und schnelles Öffnen
 - Ein-Klick-Erstellung des vollständigen PDFs
-- Automatisches Überspringen leerer Seiten: Optional aktivierbar, erkennt und überspringt leere Seiten intelligent für effizienteres Zusammenfügen.
+- Automatisches Überspringen leerer Seiten: Optional aktivierbar, nutzt Weißpixel-Verhältnisanalyse zur intelligenten Erkennung und Überspringung leerer Seiten (einschließlich fast weißer Scannerseiten) für effizienteres Zusammenfügen.
 
 ## Anwendung
 

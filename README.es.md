@@ -6,15 +6,16 @@
 
 ¿Alguna vez te has preguntado cómo unir fácilmente los PDFs de anverso y reverso de un documento escaneado?
 
-¡PdfSplicer es la solución! Herramienta inteligente para macOS, interfaz gráfica, reconoce automáticamente el orden de páginas y fusiona en un PDF completo.
+¡PdfSplicer es la solución! Herramienta inteligente para macOS con interfaz moderna CustomTkinter y soporte de arrastrar y soltar, reconoce automáticamente el orden de páginas y fusiona en un PDF completo.
 
 ## Características
-- Interfaz gráfica sencilla
+- Interfaz moderna CustomTkinter, limpia y elegante
+- Arrastrar y soltar o hacer clic para seleccionar archivos PDF
 - Selección de PDFs de anverso y reverso
 - Reconocimiento y fusión automática del orden de páginas
 - Selección de carpeta de salida y apertura rápida
 - Generación de PDF con un clic
-- Omitir automáticamente páginas en blanco: opción activable, detecta e ignora páginas vacías para mejorar la eficiencia de la unión.
+- Omitir automáticamente páginas en blanco: opción activable, utiliza análisis de proporción de píxeles blancos para detectar e ignorar páginas vacías (incluidas páginas casi blancas del escáner) para mejorar la eficiencia de la unión.
 
 ## Uso
 

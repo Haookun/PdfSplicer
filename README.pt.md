@@ -6,15 +6,16 @@
 
 Já teve dificuldades ao digitalizar documentos frente e verso e não sabe como unir os PDFs em um só?
 
-PdfSplicer resolve isso! Ferramenta inteligente para macOS, interface gráfica, reconhece automaticamente a ordem das páginas e une em um PDF completo.
+PdfSplicer resolve isso! Ferramenta inteligente para macOS com interface moderna CustomTkinter e suporte a arrastar e soltar, reconhece automaticamente a ordem das páginas e une em um PDF completo.
 
 ## Funcionalidades
-- Interface gráfica simples
+- Interface moderna CustomTkinter, limpa e elegante
+- Arrastar e soltar ou clicar para selecionar arquivos PDF
 - Seleção de PDFs frente e verso
 - Reconhecimento e união automática da ordem das páginas
 - Escolha da pasta de saída e abertura rápida
 - Geração de PDF com um clique
-- Pular automaticamente páginas em branco: opção ativável, detecta e ignora páginas vazias para maior eficiência.
+- Pular automaticamente páginas em branco: opção ativável, utiliza análise de proporção de pixels brancos para detectar e ignorar páginas vazias (incluindo páginas quase brancas do scanner) para maior eficiência.
 
 ## Como usar
 
