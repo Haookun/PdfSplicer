@@ -2,26 +2,37 @@ import sys
 import os
 import subprocess
 import io
-from tkinter import Tk, Frame, Label, Checkbutton, Entry, StringVar, BooleanVar, filedialog, messagebox
-from tkinter import ttk
+import tkinter as tk
+from tkinter import filedialog, messagebox
+
+import customtkinter as ctk
 from tkinterdnd2 import DND_FILES, TkinterDnD
 from pypdf import PdfReader, PdfWriter
 
-class PDFMerger(TkinterDnD.Tk):
+
+class PDFMerger(ctk.CTk, TkinterDnD.DnDWrapper):
     def __init__(self):
         super().__init__()
-        self.title('PdfSplicer')
-        self.geometry('500x580+300+300') # 调整窗口高度
+        self.TkdndVersion = TkinterDnD._require(self)
 
-        self.front_path = StringVar()
-        self.back_path = StringVar()
-        self.output_dir = StringVar()
-        self.skip_blank = BooleanVar(value=False)
+        self.title('PdfSplicer')
+        self.geometry('520x480')
+        self.minsize(480, 440)
+
+        ctk.set_appearance_mode("dark")
+        ctk.set_default_color_theme("blue")
+
+        self.front_path = ctk.StringVar()
+        self.back_path = ctk.StringVar()
+        self.output_dir = ctk.StringVar()
+        self.skip_blank = ctk.BooleanVar(value=False)
 
         self.poppler_path = None
         self.poppler_available = self.check_poppler()
 
         self.init_ui()
+
+    # ── Poppler 检测 ──────────────────────────────────────────────
 
     def check_poppler(self):
         import shutil
@@ -35,120 +46,179 @@ class PDFMerger(TkinterDnD.Tk):
             return True
         return False
 
+    # ── UI 构建 ───────────────────────────────────────────────────
+
     def init_ui(self):
-        main_frame = ttk.Frame(self, padding="10")
-        main_frame.pack(fill="both", expand=True)
+        # 主容器
+        main = ctk.CTkFrame(self, fg_color="transparent")
+        main.pack(fill="both", expand=True, padx=20, pady=15)
 
-        # --- 说明 ---
-        steps_text = (
-            '说明：\n此工具用于拼接PDF正反扫描件\n\n'
-            '操作步骤：\n'
-            '1. 点击“选择正面PDF”，选择正面扫描件（如页码1,3,5,7...）。\n'
-            '2. 点击“选择反面PDF”，选择反面扫描件（如页码8,6,4,2...）。\n'
-            '3. 点击“选择输出文件夹”，设置合并后PDF的保存位置。\n'
-            '4. 点击“开始拼接”，自动按正确顺序生成完整PDF，文件名“output.pdf”'
+        # ── 标题栏 ──
+        header = ctk.CTkFrame(main, fg_color="transparent")
+        header.pack(fill="x", pady=(0, 12))
+
+        ctk.CTkLabel(
+            header, text="PdfSplicer",
+            font=ctk.CTkFont(size=22, weight="bold")
+        ).pack(side="left")
+
+        self.theme_btn = ctk.CTkButton(
+            header, text="Light", width=60, height=28,
+            font=ctk.CTkFont(size=12),
+            fg_color="transparent", border_width=1,
+            command=self.toggle_theme
         )
-        steps_label = ttk.Label(main_frame, text=steps_text, wraplength=480)
-        steps_label.pack(pady=5, anchor="w")
+        self.theme_btn.pack(side="right")
 
-        info_label = ttk.Label(main_frame, text="请选择正面和反面PDF文件")
-        info_label.pack(pady=(5, 10))
+        # ── 文件选择区 ──
+        file_frame = ctk.CTkFrame(main, fg_color="transparent")
+        file_frame.pack(fill="both", expand=True, pady=(0, 10))
+        file_frame.columnconfigure(0, weight=1)
+        file_frame.columnconfigure(1, weight=1)
 
+        self.front_card, self.front_label = self._create_drop_card(
+            file_frame, "正面 PDF", "拖放文件至此\n或点击选择",
+            self._on_front_drop, self._on_front_click, row=0, col=0
+        )
+        self.back_card, self.back_label = self._create_drop_card(
+            file_frame, "反面 PDF", "拖放文件至此\n或点击选择",
+            self._on_back_drop, self._on_back_click, row=0, col=1
+        )
 
-        selection_frame = ttk.Frame(main_frame)
-        selection_frame.pack(fill="x", expand=True, pady=10)
-        selection_frame.columnconfigure(0, weight=1)
-        selection_frame.columnconfigure(1, weight=1)
+        # ── 输出路径 ──
+        output_frame = ctk.CTkFrame(main, fg_color="transparent")
+        output_frame.pack(fill="x", pady=(0, 8))
 
-        # --- 正面区域 ---
-        front_frame = ttk.LabelFrame(selection_frame, text="正面 PDF")
-        front_frame.grid(row=0, column=0, padx=5, sticky="nsew")
-        btn_front = ttk.Button(front_frame, text="选择正面PDF文件", command=self.open_front_file_dialog)
-        btn_front.pack(fill="x", padx=10, pady=5)
-        
-        drop_front = self.create_drop_target(front_frame, "或将正面PDF拖拽至此", self.select_front)
-        drop_front.pack(fill="both", expand=True, padx=10, pady=10, ipady=25)
-        
-        self.label_front = ttk.Label(front_frame, text="未选择文件", anchor="center", wraplength=200)
-        self.label_front.pack(fill="x", pady=5)
+        self.output_entry = ctk.CTkEntry(
+            output_frame, textvariable=self.output_dir,
+            placeholder_text="选择输出文件夹...", state="readonly",
+            height=36
+        )
+        self.output_entry.pack(side="left", fill="x", expand=True, padx=(0, 8))
 
-        # --- 反面区域 ---
-        back_frame = ttk.LabelFrame(selection_frame, text="反面 PDF")
-        back_frame.grid(row=0, column=1, padx=5, sticky="nsew")
-        btn_back = ttk.Button(back_frame, text="选择反面PDF文件", command=self.open_back_file_dialog)
-        btn_back.pack(fill="x", padx=10, pady=5)
+        ctk.CTkButton(
+            output_frame, text="选择", width=70, height=36,
+            command=self.select_output
+        ).pack(side="right")
 
-        drop_back = self.create_drop_target(back_frame, "或将反面PDF拖拽至此", self.select_back)
-        drop_back.pack(fill="both", expand=True, padx=10, pady=10, ipady=25)
+        # ── 选项 ──
+        option_frame = ctk.CTkFrame(main, fg_color="transparent")
+        option_frame.pack(fill="x", pady=(0, 12))
 
-        self.label_back = ttk.Label(back_frame, text="未选择文件", anchor="center", wraplength=200)
-        self.label_back.pack(fill="x", pady=5)
-        
-        # --- 选项 ---
-        check_frame = ttk.Frame(main_frame)
-        check_frame.pack(fill="x", pady=5)
-        skip_check = ttk.Checkbutton(check_frame, text="跳过空白页", variable=self.skip_blank)
-        skip_check.pack()
+        self.skip_check = ctk.CTkCheckBox(
+            option_frame, text="跳过空白页",
+            variable=self.skip_blank,
+            font=ctk.CTkFont(size=13)
+        )
+        self.skip_check.pack(side="left")
+
         if not self.poppler_available:
-            skip_check.config(state="disabled")
-            messagebox.showwarning("依赖缺失", "未检测到poppler (pdftoppm)，空白页识别功能不可用。")
+            self.skip_check.configure(state="disabled")
+            self.after(500, lambda: messagebox.showwarning(
+                "依赖缺失", "未检测到 poppler (pdftoppm)，空白页识别功能不可用。"
+            ))
 
-        # --- 输出 ---
-        output_frame = ttk.Frame(main_frame)
-        output_frame.pack(fill="x", pady=10)
-        output_entry = ttk.Entry(output_frame, textvariable=self.output_dir, state="readonly")
-        output_entry.pack(side="left", fill="x", expand=True, padx=(0, 5))
-        btn_output = ttk.Button(output_frame, text="选择输出文件夹", command=self.select_output)
-        btn_output.pack(side="right")
-
-        # --- 操作 ---
-        action_frame = ttk.Frame(main_frame)
-        action_frame.pack(fill="x", pady=10)
+        # ── 操作按钮 ──
+        action_frame = ctk.CTkFrame(main, fg_color="transparent")
+        action_frame.pack(fill="x")
         action_frame.columnconfigure(0, weight=1)
         action_frame.columnconfigure(1, weight=1)
-        btn_open = ttk.Button(action_frame, text="打开输出文件夹", command=self.open_output_folder)
-        btn_open.grid(row=0, column=0, padx=5, sticky="ew")
-        btn_merge = ttk.Button(action_frame, text="开始拼接", command=self.merge_pdfs)
-        btn_merge.grid(row=0, column=1, padx=5, sticky="ew")
-    
-    def create_drop_target(self, parent, text, drop_cmd):
-        frame = Frame(parent, relief="groove", borderwidth=2, bg="#f0f0f0")
-        frame.pack_propagate(False) # 防止label挤压frame
-        label = Label(frame, text=text, bg="#f0f0f0", fg="gray")
-        label.pack(expand=True)
-        
-        frame.drop_target_register(DND_FILES)
-        frame.dnd_bind('<<Drop>>', drop_cmd)
-        
-        # 添加悬停效果
-        def on_enter(e): label.config(bg="#e0e0e0")
-        def on_leave(e): label.config(bg="#f0f0f0")
-        frame.bind("<Enter>", on_enter)
-        frame.bind("<Leave>", on_leave)
 
-        return frame
+        ctk.CTkButton(
+            action_frame, text="打开输出文件夹", height=40,
+            fg_color="transparent", border_width=1,
+            font=ctk.CTkFont(size=14),
+            command=self.open_output_folder
+        ).grid(row=0, column=0, padx=(0, 5), sticky="ew")
 
-    def open_front_file_dialog(self):
+        ctk.CTkButton(
+            action_frame, text="开始拼接", height=40,
+            font=ctk.CTkFont(size=14, weight="bold"),
+            command=self.merge_pdfs
+        ).grid(row=0, column=1, padx=(5, 0), sticky="ew")
+
+    # ── 拖放卡片 ─────────────────────────────────────────────────
+
+    def _create_drop_card(self, parent, title, hint, drop_cmd, click_cmd, row, col):
+        """创建一个可拖放/可点击的文件选择卡片"""
+        outer = ctk.CTkFrame(parent, corner_radius=10)
+        outer.grid(row=row, column=col, padx=5, pady=5, sticky="nsew")
+        parent.rowconfigure(row, weight=1)
+
+        # 标题
+        ctk.CTkLabel(
+            outer, text=title,
+            font=ctk.CTkFont(size=14, weight="bold")
+        ).pack(pady=(10, 0))
+
+        # 拖放区域 — 使用原生 tk.Frame 以支持 tkinterdnd2
+        drop_zone = tk.Frame(outer, bg="#2b2b2b", relief="flat", bd=0)
+        drop_zone.pack(fill="both", expand=True, padx=12, pady=8)
+
+        hint_label = tk.Label(
+            drop_zone, text=hint,
+            fg="#888888", bg="#2b2b2b",
+            font=("Helvetica", 12), justify="center"
+        )
+        hint_label.pack(expand=True)
+
+        # 注册拖放
+        drop_zone.drop_target_register(DND_FILES)
+        drop_zone.dnd_bind('<<Drop>>', drop_cmd)
+
+        # 点击选择
+        drop_zone.bind("<Button-1>", click_cmd)
+        hint_label.bind("<Button-1>", click_cmd)
+
+        # 悬停效果
+        def on_enter(e):
+            drop_zone.config(bg="#3a3a3a")
+            hint_label.config(bg="#3a3a3a")
+
+        def on_leave(e):
+            drop_zone.config(bg="#2b2b2b")
+            hint_label.config(bg="#2b2b2b")
+
+        drop_zone.bind("<Enter>", on_enter)
+        drop_zone.bind("<Leave>", on_leave)
+
+        # 文件名标签
+        file_label = ctk.CTkLabel(
+            outer, text="未选择文件",
+            font=ctk.CTkFont(size=11),
+            text_color="gray"
+        )
+        file_label.pack(pady=(0, 10))
+
+        return drop_zone, file_label
+
+    # ── 文件选择处理 ──────────────────────────────────────────────
+
+    def _on_front_drop(self, event):
+        self._set_front(event.data.strip('{}'))
+
+    def _on_back_drop(self, event):
+        self._set_back(event.data.strip('{}'))
+
+    def _on_front_click(self, event=None):
         path = filedialog.askopenfilename(title="选择正面PDF", filetypes=[("PDF Files", "*.pdf")])
         if path:
-            self.select_front(path)
+            self._set_front(path)
 
-    def open_back_file_dialog(self):
+    def _on_back_click(self, event=None):
         path = filedialog.askopenfilename(title="选择反面PDF", filetypes=[("PDF Files", "*.pdf")])
         if path:
-            self.select_back(path)
+            self._set_back(path)
 
-    def select_front(self, event_or_path):
-        path = event_or_path.data.strip('{}') if hasattr(event_or_path, 'data') else event_or_path
+    def _set_front(self, path):
         if path:
             self.front_path.set(path)
-            self.label_front.config(text=f".../{os.path.basename(path)}")
+            self.front_label.configure(text=os.path.basename(path), text_color="#4a9eff")
 
-    def select_back(self, event_or_path):
-        path = event_or_path.data.strip('{}') if hasattr(event_or_path, 'data') else event_or_path
+    def _set_back(self, path):
         if path:
             self.back_path.set(path)
-            self.label_back.config(text=f".../{os.path.basename(path)}")
+            self.back_label.configure(text=os.path.basename(path), text_color="#4a9eff")
 
     def select_output(self):
         path = filedialog.askdirectory(title="选择输出文件夹")
@@ -167,119 +237,43 @@ class PDFMerger(TkinterDnD.Tk):
         else:
             messagebox.showwarning("提示", "请先选择一个有效的输出文件夹")
 
-    def is_blank_page(self, page):
-        if not self.poppler_available: return False
-        try:
-            from pdf2image import convert_from_bytes
-            writer = PdfWriter()
-            writer.add_page(page)
-            with io.BytesIO() as pdf_bytes:
-                writer.write(pdf_bytes)
-                pdf_bytes.seek(0)
-                images = convert_from_bytes(pdf_bytes.read(), first_page=1, last_page=1, poppler_path=self.poppler_path)
-                if images:
-                    img = images[0].convert('L')
-                    pixels = list(img.getdata())
-                    avg_gray = sum(pixels) / len(pixels) if pixels else 255
-                    var_gray = sum((p - avg_gray) ** 2 for p in pixels) / len(pixels) if pixels else 0
-                    return avg_gray >= 250 and var_gray <= 10
-        except Exception:
-            return False
-        return False
+    # ── 主题切换 ──────────────────────────────────────────────────
 
-    def merge_pdfs(self):
-        front_path = self.front_path.get()
-        back_path = self.back_path.get()
-        output_dir = self.output_dir.get()
-
-        if not all([front_path, back_path, output_dir]):
-            messagebox.showwarning('提示', '请先选择所有文件路径和输出文件夹')
-            return
-
-        output_path = os.path.join(output_dir, 'output.pdf')
-
-        try:
-            front_reader = PdfReader(front_path)
-            back_reader = PdfReader(back_path)
-            ordered_pages = []
-            
-            front_pages_count = len(front_reader.pages)
-            back_pages_count = len(back_reader.pages)
-
-            if front_pages_count == back_pages_count > 0:
-                for i in range(front_pages_count):
-                    ordered_pages.append(front_reader.pages[i])
-                    ordered_pages.append(back_reader.pages[back_pages_count - 1 - i])
-            else:
-                ordered_pages.extend(front_reader.pages)
-                ordered_pages.extend(back_reader.pages)
-
-            final_pages = []
-            if self.skip_blank.get():
-                has_blank = False
-                for page in ordered_pages:
-                    if not self.is_blank_page(page):
-                        final_pages.append(page)
-                    else:
-                        has_blank = True
-            else:
-                final_pages = ordered_pages
-                # Inefficient to check for blanks if not skipping, but keep logic simple
-                has_blank = any(self.is_blank_page(p) for p in ordered_pages if self.poppler_available)
-
-            writer = PdfWriter()
-            for page in final_pages:
-                writer.add_page(page)
-
-            with open(output_path, 'wb') as f:
-                writer.write(f)
-            
-            messagebox.showinfo('成功', f'PDF拼接完成！\n保存至: {output_path}\n跳过空白页: {"是" if self.skip_blank.get() else "否"}\n检测到空白页: {"是" if has_blank else "否"}\n拼接后总页数: {len(final_pages)}')
-        except Exception as e:
-            messagebox.showerror('错误', f'拼接失败: {e}')
-
-
-    def open_front_file_dialog(self):
-        path = filedialog.askopenfilename(title="选择正面PDF", filetypes=[("PDF Files", "*.pdf")])
-        if path:
-            self.select_front(path)
-
-    def open_back_file_dialog(self):
-        path = filedialog.askopenfilename(title="选择反面PDF", filetypes=[("PDF Files", "*.pdf")])
-        if path:
-            self.select_back(path)
-
-    def select_front(self, event_or_path):
-        path = event_or_path.data.strip('{}') if hasattr(event_or_path, 'data') else event_or_path
-        if path:
-            self.front_path.set(path)
-            self.label_front.config(text=f".../{os.path.basename(path)}")
-
-    def select_back(self, event_or_path):
-        path = event_or_path.data.strip('{}') if hasattr(event_or_path, 'data') else event_or_path
-        if path:
-            self.back_path.set(path)
-            self.label_back.config(text=f".../{os.path.basename(path)}")
-
-    def select_output(self):
-        path = filedialog.askdirectory(title="选择输出文件夹")
-        if path:
-            self.output_dir.set(path)
-
-    def open_output_folder(self):
-        path = self.output_dir.get()
-        if path and os.path.isdir(path):
-            if sys.platform == 'darwin':
-                subprocess.run(['open', path])
-            elif sys.platform == 'win32':
-                os.startfile(path)
-            else:
-                subprocess.run(['xdg-open', path])
+    def toggle_theme(self):
+        current = ctk.get_appearance_mode()
+        if current == "Dark":
+            ctk.set_appearance_mode("light")
+            self.theme_btn.configure(text="Dark")
+            self._update_drop_zone_colors("#e8e8e8", "#666666", "#d0d0d0")
         else:
-            messagebox.showwarning("提示", "请先选择一个有效的输出文件夹")
+            ctk.set_appearance_mode("dark")
+            self.theme_btn.configure(text="Light")
+            self._update_drop_zone_colors("#2b2b2b", "#888888", "#3a3a3a")
+
+    def _update_drop_zone_colors(self, bg, fg, hover_bg):
+        """更新拖放区域颜色以匹配主题"""
+        for zone in [self.front_card, self.back_card]:
+            zone.config(bg=bg)
+            for child in zone.winfo_children():
+                child.config(bg=bg, fg=fg)
+            zone.bind("<Enter>", lambda e, z=zone, h=hover_bg: self._hover_enter(z, h))
+            zone.bind("<Leave>", lambda e, z=zone, b=bg: self._hover_leave(z, b))
+
+    def _hover_enter(self, zone, hover_bg):
+        zone.config(bg=hover_bg)
+        for child in zone.winfo_children():
+            child.config(bg=hover_bg)
+
+    def _hover_leave(self, zone, bg):
+        zone.config(bg=bg)
+        for child in zone.winfo_children():
+            child.config(bg=bg)
+
+    # ── 空白页检测 ────────────────────────────────────────────────
 
     def is_blank_page(self, page):
-        if not self.poppler_available: return False
+        if not self.poppler_available:
+            return False
         try:
             from pdf2image import convert_from_bytes
             writer = PdfWriter()
@@ -287,7 +281,10 @@ class PDFMerger(TkinterDnD.Tk):
             with io.BytesIO() as pdf_bytes:
                 writer.write(pdf_bytes)
                 pdf_bytes.seek(0)
-                images = convert_from_bytes(pdf_bytes.read(), first_page=1, last_page=1, poppler_path=self.poppler_path)
+                images = convert_from_bytes(
+                    pdf_bytes.read(), first_page=1, last_page=1,
+                    poppler_path=self.poppler_path
+                )
                 if images:
                     img = images[0].convert('L')
                     pixels = list(img.getdata())
@@ -297,6 +294,8 @@ class PDFMerger(TkinterDnD.Tk):
         except Exception:
             return False
         return False
+
+    # ── PDF 拼接 ──────────────────────────────────────────────────
 
     def merge_pdfs(self):
         front_path = self.front_path.get()
@@ -313,7 +312,7 @@ class PDFMerger(TkinterDnD.Tk):
             front_reader = PdfReader(front_path)
             back_reader = PdfReader(back_path)
             ordered_pages = []
-            
+
             front_pages_count = len(front_reader.pages)
             back_pages_count = len(back_reader.pages)
 
@@ -326,8 +325,9 @@ class PDFMerger(TkinterDnD.Tk):
                 ordered_pages.extend(back_reader.pages)
 
             final_pages = []
+            has_blank = False
+
             if self.skip_blank.get():
-                has_blank = False
                 for page in ordered_pages:
                     if not self.is_blank_page(page):
                         final_pages.append(page)
@@ -335,8 +335,6 @@ class PDFMerger(TkinterDnD.Tk):
                         has_blank = True
             else:
                 final_pages = ordered_pages
-                # Inefficient to check for blanks if not skipping, but keep logic simple
-                has_blank = any(self.is_blank_page(p) for p in ordered_pages if self.poppler_available)
 
             writer = PdfWriter()
             for page in final_pages:
@@ -344,10 +342,18 @@ class PDFMerger(TkinterDnD.Tk):
 
             with open(output_path, 'wb') as f:
                 writer.write(f)
-            
-            messagebox.showinfo('成功', f'PDF拼接完成！\n保存至: {output_path}\n跳过空白页: {"是" if self.skip_blank.get() else "否"}\n检测到空白页: {"是" if has_blank else "否"}\n拼接后总页数: {len(final_pages)}')
+
+            messagebox.showinfo(
+                '成功',
+                f'PDF拼接完成！\n'
+                f'保存至: {output_path}\n'
+                f'跳过空白页: {"是" if self.skip_blank.get() else "否"}\n'
+                f'检测到空白页: {"是" if has_blank else "否"}\n'
+                f'拼接后总页数: {len(final_pages)}'
+            )
         except Exception as e:
             messagebox.showerror('错误', f'拼接失败: {e}')
+
 
 if __name__ == '__main__':
     app = PDFMerger()

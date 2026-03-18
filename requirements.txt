@@ -1,4 +1,5 @@
-pypdf
-pdf2image
-Pillow
-tkinterdnd2-universal
+pypdf>=4.0,<5.0
+pdf2image>=1.16,<2.0
+Pillow>=10.0,<12.0
+customtkinter>=5.2,<6.0
+tkinterdnd2-universal>=1.7,<2.0
