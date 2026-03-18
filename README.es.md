@@ -20,7 +20,7 @@
 ## Uso
 
 <div align="center">
-   <img width="400" alt="Captura de pantalla" src="https://github.com/user-attachments/assets/e22dde23-d568-4592-9f83-bb71a0ec1290" />
+	<img width="400" alt="截屏2026-03-18 11 51 43" src="https://github.com/user-attachments/assets/7669efb5-6c34-4a64-a59c-9176ec11cc26" />
 </div>
 
 1. Ve a la [página de Releases](https://github.com/Haookun/PdfSplicer/releases) y descarga el instalador `PdfSplicer.dmg` más reciente.

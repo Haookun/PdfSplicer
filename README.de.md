@@ -20,7 +20,7 @@ PdfSplicer löst dieses Problem! Ein intelligentes PDF-Merge-Tool für macOS mit
 ## Anwendung
 
 <div align="center">
-   <img width="400" alt="Screenshot" src="https://github.com/user-attachments/assets/e22dde23-d568-4592-9f83-bb71a0ec1290" />
+	<img width="400" alt="截屏2026-03-18 11 51 43" src="https://github.com/user-attachments/assets/7669efb5-6c34-4a64-a59c-9176ec11cc26" />
 </div>
 
 1. Gehen Sie auf die [Release-Seite](https://github.com/Haookun/PdfSplicer/releases) und laden Sie die neueste `PdfSplicer.dmg` Installationsdatei herunter.
