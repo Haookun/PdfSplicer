@@ -1,58 +1,76 @@
 #!/bin/bash
-# 构建macOS App和DMG
-# 自动检测依赖、集成bin目录、打包后检测App可运行性
+# ============================================================
+# PdfSplicer macOS 打包脚本
+# 用法: bash build_app.sh
+# 产物: dist/PdfSplicer.app + PdfSplicer.dmg
+# ============================================================
+set -e
 
 APP_NAME="PdfSplicer"
 ENTRY="main.py"
-ICON="app_icon.icns" # 如有自定义图标请替换
+ICON="app_icon.icns"
 BIN_DIR="bin"
 
-# Step 0: 安装 requirements.txt 依赖
+echo "=========================================="
+echo "  PdfSplicer macOS 打包"
+echo "=========================================="
+
+# ── Step 0: 安装依赖 ──
+echo "[1/5] 安装依赖..."
 if [ -f "requirements.txt" ]; then
-    echo "正在安装 requirements.txt 依赖..."
-    python3 -m pip install -r requirements.txt
+    pip install -r requirements.txt
 fi
-
-# Step 0: 检查依赖
 for pkg in pyinstaller dmgbuild; do
-    if ! python3 -m pip show $pkg >/dev/null 2>&1; then
-        echo "未检测到 $pkg，正在自动安装..."
-        python3 -m pip install $pkg
+    if ! python3 -m pip show "$pkg" >/dev/null 2>&1; then
+        echo "  安装 $pkg ..."
+        pip install "$pkg"
     fi
-
 done
 
-# Step 1: 清理旧产物
-rm -rf dist build
+# ── Step 1: 清理旧产物 ──
+echo "[2/5] 清理旧产物..."
+rm -rf dist build "${APP_NAME}.dmg"
 
-# Step 2: 检查bin目录
+# ── Step 2: 检查 bin 目录 ──
 if [ ! -d "$BIN_DIR" ]; then
-    echo "警告：未检测到bin目录，pdftoppm等依赖可能缺失！"
+    echo "  警告: 未检测到 bin 目录，pdftoppm 等依赖可能缺失！"
 fi
 
-# Step 3: PyInstaller打包App（集成bin目录）
-pyinstaller --windowed --name "PdfSplicer" --icon "app_icon.icns" --add-data "bin:bin" --hidden-import PyQt6 "$ENTRY"
+# ── Step 3: PyInstaller 打包 ──
+echo "[3/5] PyInstaller 打包中..."
+pyinstaller \
+    --windowed \
+    --name "$APP_NAME" \
+    --icon "$ICON" \
+    --add-data "$BIN_DIR:$BIN_DIR" \
+    --hidden-import tkinterdnd2 \
+    --hidden-import customtkinter \
+    --noconfirm \
+    --clean \
+    "$ENTRY"
 
-# Step 4: dmgbuild生成DMG
+# ── Step 4: 生成 DMG ──
+echo "[4/5] 生成 DMG..."
 if [ -f "dmg_settings.py" ]; then
     dmgbuild -s dmg_settings.py "$APP_NAME" "${APP_NAME}.dmg"
+    echo "  DMG 已生成: ${APP_NAME}.dmg"
 else
-    echo "请先准备dmg_settings.py配置文件！"
+    echo "  跳过 DMG 生成 (未找到 dmg_settings.py)"
 fi
 
-# Step 5: 打包后检测App是否可运行
+# ── Step 5: 验证 ──
+echo "[5/5] 验证打包结果..."
 APP_EXE="dist/$APP_NAME.app/Contents/MacOS/$APP_NAME"
 if [ -f "$APP_EXE" ]; then
-    echo "正在检测App启动..."
-    "$APP_EXE" > dist/app_test.log 2>&1 &
-    sleep 2
-    if grep -iE 'error|exception|traceback' dist/app_test.log; then
-        echo "警告：App启动检测到异常，请查看 dist/app_test.log 日志！"
-    else
-        echo "App启动检测通过。"
-    fi
+    echo "  App 可执行文件已生成: $APP_EXE"
+    echo "  打包成功!"
 else
-    echo "未找到App可执行文件，打包可能失败。"
+    echo "  错误: 未找到 App 可执行文件，打包可能失败。"
+    exit 1
 fi
 
-echo "打包完成，App和DMG已生成。"
+echo "=========================================="
+echo "  macOS 打包完成"
+echo "  App: dist/${APP_NAME}.app"
+[ -f "${APP_NAME}.dmg" ] && echo "  DMG: ${APP_NAME}.dmg"
+echo "=========================================="

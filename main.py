@@ -120,7 +120,7 @@ class PDFMerger(ctk.CTk, TkinterDnD.DnDWrapper):
 
         ctk.CTkButton(
             action_frame, text="打开输出文件夹", height=40,
-            fg_color="transparent", border_width=1,
+            fg_color="#e0e0e0", text_color="#1a1a1a", hover_color="#d0d0d0",
             font=ctk.CTkFont(size=14),
             command=self.open_output_folder
         ).grid(row=0, column=0, padx=(0, 5), sticky="ew")
@@ -232,38 +232,6 @@ class PDFMerger(ctk.CTk, TkinterDnD.DnDWrapper):
         else:
             messagebox.showwarning("提示", "请先选择一个有效的输出文件夹")
 
-    # ── 主题切换 ──────────────────────────────────────────────────
-
-    def toggle_theme(self):
-        current = ctk.get_appearance_mode()
-        if current == "Dark":
-            ctk.set_appearance_mode("light")
-            self.theme_btn.configure(text="Dark")
-            self._update_drop_zone_colors("#e8e8e8", "#666666", "#d0d0d0")
-        else:
-            ctk.set_appearance_mode("dark")
-            self.theme_btn.configure(text="Light")
-            self._update_drop_zone_colors("#2b2b2b", "#888888", "#3a3a3a")
-
-    def _update_drop_zone_colors(self, bg, fg, hover_bg):
-        """更新拖放区域颜色以匹配主题"""
-        for zone in [self.front_card, self.back_card]:
-            zone.config(bg=bg)
-            for child in zone.winfo_children():
-                child.config(bg=bg, fg=fg)
-            zone.bind("<Enter>", lambda e, z=zone, h=hover_bg: self._hover_enter(z, h))
-            zone.bind("<Leave>", lambda e, z=zone, b=bg: self._hover_leave(z, b))
-
-    def _hover_enter(self, zone, hover_bg):
-        zone.config(bg=hover_bg)
-        for child in zone.winfo_children():
-            child.config(bg=hover_bg)
-
-    def _hover_leave(self, zone, bg):
-        zone.config(bg=bg)
-        for child in zone.winfo_children():
-            child.config(bg=bg)
-
     # ── 空白页检测 ────────────────────────────────────────────────
 
     def is_blank_page(self, page):
@@ -278,14 +246,20 @@ class PDFMerger(ctk.CTk, TkinterDnD.DnDWrapper):
                 pdf_bytes.seek(0)
                 images = convert_from_bytes(
                     pdf_bytes.read(), first_page=1, last_page=1,
-                    poppler_path=self.poppler_path
+                    poppler_path=self.poppler_path, dpi=72
                 )
                 if images:
-                    img = images[0].convert('L')
+                    # 缩小图像以降低噪点敏感度并提升速度
+                    img = images[0].convert('L').resize((200, 200))
                     pixels = list(img.getdata())
-                    avg_gray = sum(pixels) / len(pixels) if pixels else 255
-                    var_gray = sum((p - avg_gray) ** 2 for p in pixels) / len(pixels) if pixels else 0
-                    return avg_gray >= 250 and var_gray <= 10
+                    if not pixels:
+                        return False
+                    total = len(pixels)
+                    avg_gray = sum(pixels) / total
+                    # 统计"近白"像素（灰度 > 220）的占比
+                    white_ratio = sum(1 for p in pixels if p > 220) / total
+                    # 平均灰度 >= 230 且 95% 以上像素近白 → 空白页
+                    return avg_gray >= 230 and white_ratio >= 0.95
         except Exception:
             return False
         return False
