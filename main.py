@@ -19,7 +19,7 @@ class PDFMerger(ctk.CTk, TkinterDnD.DnDWrapper):
         self.geometry('520x480')
         self.minsize(480, 440)
 
-        ctk.set_appearance_mode("dark")
+        ctk.set_appearance_mode("light")
         ctk.set_default_color_theme("blue")
 
         self.front_path = ctk.StringVar()
@@ -59,16 +59,9 @@ class PDFMerger(ctk.CTk, TkinterDnD.DnDWrapper):
 
         ctk.CTkLabel(
             header, text="PdfSplicer",
-            font=ctk.CTkFont(size=22, weight="bold")
+            font=ctk.CTkFont(size=22, weight="bold"),
+            text_color="#1a1a1a"
         ).pack(side="left")
-
-        self.theme_btn = ctk.CTkButton(
-            header, text="Light", width=60, height=28,
-            font=ctk.CTkFont(size=12),
-            fg_color="transparent", border_width=1,
-            command=self.toggle_theme
-        )
-        self.theme_btn.pack(side="right")
 
         # ── 文件选择区 ──
         file_frame = ctk.CTkFrame(main, fg_color="transparent")
@@ -108,7 +101,8 @@ class PDFMerger(ctk.CTk, TkinterDnD.DnDWrapper):
         self.skip_check = ctk.CTkCheckBox(
             option_frame, text="跳过空白页",
             variable=self.skip_blank,
-            font=ctk.CTkFont(size=13)
+            font=ctk.CTkFont(size=13),
+            text_color="#333333"
         )
         self.skip_check.pack(side="left")
 
@@ -148,16 +142,17 @@ class PDFMerger(ctk.CTk, TkinterDnD.DnDWrapper):
         # 标题
         ctk.CTkLabel(
             outer, text=title,
-            font=ctk.CTkFont(size=14, weight="bold")
+            font=ctk.CTkFont(size=14, weight="bold"),
+            text_color="#1a1a1a"
         ).pack(pady=(10, 0))
 
         # 拖放区域 — 使用原生 tk.Frame 以支持 tkinterdnd2
-        drop_zone = tk.Frame(outer, bg="#2b2b2b", relief="flat", bd=0)
+        drop_zone = tk.Frame(outer, bg="#e8e8e8", relief="flat", bd=0)
         drop_zone.pack(fill="both", expand=True, padx=12, pady=8)
 
         hint_label = tk.Label(
             drop_zone, text=hint,
-            fg="#888888", bg="#2b2b2b",
+            fg="#555555", bg="#e8e8e8",
             font=("Helvetica", 12), justify="center"
         )
         hint_label.pack(expand=True)
@@ -172,12 +167,12 @@ class PDFMerger(ctk.CTk, TkinterDnD.DnDWrapper):
 
         # 悬停效果
         def on_enter(e):
-            drop_zone.config(bg="#3a3a3a")
-            hint_label.config(bg="#3a3a3a")
+            drop_zone.config(bg="#d0d0d0")
+            hint_label.config(bg="#d0d0d0")
 
         def on_leave(e):
-            drop_zone.config(bg="#2b2b2b")
-            hint_label.config(bg="#2b2b2b")
+            drop_zone.config(bg="#e8e8e8")
+            hint_label.config(bg="#e8e8e8")
 
         drop_zone.bind("<Enter>", on_enter)
         drop_zone.bind("<Leave>", on_leave)
@@ -186,7 +181,7 @@ class PDFMerger(ctk.CTk, TkinterDnD.DnDWrapper):
         file_label = ctk.CTkLabel(
             outer, text="未选择文件",
             font=ctk.CTkFont(size=11),
-            text_color="gray"
+            text_color="#999999"
         )
         file_label.pack(pady=(0, 10))
 
@@ -213,12 +208,12 @@ class PDFMerger(ctk.CTk, TkinterDnD.DnDWrapper):
     def _set_front(self, path):
         if path:
             self.front_path.set(path)
-            self.front_label.configure(text=os.path.basename(path), text_color="#4a9eff")
+            self.front_label.configure(text=os.path.basename(path), text_color="#0066cc")
 
     def _set_back(self, path):
         if path:
             self.back_path.set(path)
-            self.back_label.configure(text=os.path.basename(path), text_color="#4a9eff")
+            self.back_label.configure(text=os.path.basename(path), text_color="#0066cc")
 
     def select_output(self):
         path = filedialog.askdirectory(title="选择输出文件夹")
